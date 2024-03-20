@@ -22,14 +22,11 @@ func twoSum(nums []int, target int) [][2]int {
 		if !ok {
 			continue
 		}
-		for foundBalancerIndex := range indexes {
-			var pair [2]int
+		for _, foundBalancerIndex := range indexes {
+			// Only take the case where lower index first, otherwise we will have dupes
 			if i < foundBalancerIndex {
-				pair = [2]int{i, foundBalancerIndex}
-			} else {
-				pair = [2]int{foundBalancerIndex, i}
+				pairs = append(pairs, [2]int{num, balancer})
 			}
-			pairs = append(pairs, pair)
 		}
 	}
 	return pairs

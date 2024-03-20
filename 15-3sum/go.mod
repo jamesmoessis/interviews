@@ -1,4 +1,4 @@
-module github.com/jamesmoessis/interviews/1-two-sum
+module github.com/jamesmoessis/interviews/15-3sum
 
 go 1.22.0
 
