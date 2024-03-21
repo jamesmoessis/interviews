@@ -31,3 +31,22 @@ func twoSum(nums []int, target int) [][2]int {
 	}
 	return pairs
 }
+
+// todo debug this
+func twoSumEasy(nums []int, target int) []int {
+	// maps value to index
+	m := make(map[int]int, len(nums))
+
+	for i, num := range nums {
+		m[num] = i
+	}
+
+	for i, num := range nums {
+		balancer := target - num
+		balancerIndex, ok := m[balancer]
+		if ok && balancerIndex != i {
+			return []int{i, balancerIndex}
+		}
+	}
+	return nil
+}
