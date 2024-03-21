@@ -1,6 +1,9 @@
 package main
 
-import "slices"
+import (
+	"slices"
+	"sort"
+)
 
 // threeSum solves the 3-sum problem by reducing it to n 2-sum problems
 // So if we have an O(n) 2-sum we can get an O(n^2) 3-sum.
@@ -86,4 +89,46 @@ func twoSumEasy(nums []int, target int) []int {
 	}
 
 	return nil
+}
+
+// Very smart solution I found on leetcode solutions
+func threeSumSmart(nums []int) [][]int {
+	var res [][]int
+
+	if len(nums) < 3 {
+		return res
+	}
+
+	sort.Ints(nums)
+
+	for i := 0; i < len(nums)-2; i++ {
+		if i > 0 && nums[i] == nums[i-1] {
+			continue
+		}
+
+		left, right := i+1, len(nums)-1
+
+		for left < right {
+			target := nums[i] + nums[left] + nums[right]
+
+			if target == 0 {
+				res = append(res, []int{nums[i], nums[left], nums[right]})
+				left, right = left+1, right-1
+
+				for left < right && nums[left] == nums[left-1] {
+					left++
+				}
+
+				for left < right && nums[right] == nums[right+1] {
+					right--
+				}
+			} else if target > 0 {
+				right--
+			} else {
+				left++
+			}
+		}
+	}
+
+	return res
 }
