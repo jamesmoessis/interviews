@@ -43,28 +43,23 @@ Fairly slow if you have a lot of routes.
 I think it's fairly trivial using a list, so I'm gonna go hard mode and try a tree
 */
 
-type Router interface {
-	AddRoute(path string, handler Handler)
-	CallRoute(path string) string
-}
-
 type Handler string
 
-type RouterI struct {
+type Router struct {
 	routes Tree
 }
 
-func NewRouter() *RouterI {
-	return &RouterI{routes: *NewTree()}
+func NewRouter() *Router {
+	return &Router{routes: *NewTree()}
 }
 
-func (r *RouterI) AddRoute(path string, handler Handler) {
+func (r *Router) AddRoute(path string, handler Handler) {
 	pathArr := strings.Split(path, "/")
 	slices.Insert(pathArr, 0, "/")
 	r.routes.Put(pathArr, handler)
 }
 
-func (r *RouterI) CallRoute(path string) Handler {
+func (r *Router) CallRoute(path string) Handler {
 	pathArr := strings.Split(path, "/")
 	slices.Insert(pathArr, 0, "/")
 	return r.routes.Get(pathArr)
