@@ -10,7 +10,7 @@ type Entry[K comparable, V any] struct {
 
 // Node represents a node in the doubly linked list.
 type Node[K comparable, V any] struct {
-	value *Entry[K, V]
+	entry *Entry[K, V]
 	prev  *Node[K, V]
 	next  *Node[K, V]
 }
@@ -35,14 +35,14 @@ func (lm *LinkedMap[K, V]) Get(key K) (V, bool) {
 	var zeroValue V
 	if node, found := lm.data[key]; found {
 		lm.moveToFront(node)
-		return node.value.value, true
+		return node.entry.value, true
 	}
 	return zeroValue, false
 }
 
 func (lm *LinkedMap[K, V]) GetNewest() (*Entry[K, V], bool) {
 	if lm.head != nil {
-		return lm.head.value, true
+		return lm.head.entry, true
 	}
 	var e *Entry[K, V]
 	return e, false
@@ -50,19 +50,19 @@ func (lm *LinkedMap[K, V]) GetNewest() (*Entry[K, V], bool) {
 
 func (lm *LinkedMap[K, V]) GetOldest() (*Entry[K, V], bool) {
 	if lm.tail != nil {
-		return lm.tail.value, true
+		return lm.tail.entry, true
 	}
 	var e *Entry[K, V]
 	return e, false
 }
 
-// Put inserts a key-value pair into the map, updating its recentness.
+// Put inserts a key-entry pair into the map, updating its recentness.
 func (lm *LinkedMap[K, V]) Put(key K, value V) {
 	if node, found := lm.data[key]; found {
-		node.value.value = value
+		node.entry.value = value
 		lm.moveToFront(node)
 	} else {
-		newNode := &Node[K, V]{value: &Entry[K, V]{key, value}}
+		newNode := &Node[K, V]{entry: &Entry[K, V]{key, value}}
 		lm.addToFront(newNode)
 		lm.data[key] = newNode
 	}
@@ -116,7 +116,7 @@ func (lm *LinkedMap[K, V]) removeNode(node *Node[K, V]) {
 // removeOldest removes the oldest node from the linked list.
 func (lm *LinkedMap[K, V]) removeOldest() {
 	if lm.tail != nil {
-		delete(lm.data, lm.tail.value.key)
+		delete(lm.data, lm.tail.entry.key)
 		lm.removeNode(lm.tail)
 	}
 }
@@ -124,6 +124,6 @@ func (lm *LinkedMap[K, V]) removeOldest() {
 // Print prints all entries in the map from most to least recently used.
 func (lm *LinkedMap[K, V]) Print() {
 	for node := lm.head; node != nil; node = node.next {
-		fmt.Printf("%v: %v\n", node.value.key, node.value.value)
+		fmt.Printf("%v: %v\n", node.entry.key, node.entry.value)
 	}
 }

@@ -51,9 +51,9 @@ func TestLinkedMap_UpdateValue(t *testing.T) {
 	lm := NewLinkedMap[string, int](3)
 
 	lm.Put("a", 1)
-	lm.Put("a", 10) // Update the value for key "a"
+	lm.Put("a", 10) // Update the entry for key "a"
 
-	// Check if the value is updated
+	// Check if the entry is updated
 	val, ok := lm.Get("a")
 	assert.True(t, ok, "expected to find key 'a'")
 	assert.Equal(t, 10, val, "expected 'a' to be 10")
